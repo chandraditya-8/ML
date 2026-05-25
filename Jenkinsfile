@@ -8,7 +8,15 @@ pipeline {
 
             steps {
 
-                git 'https://github.com/chandraditya-8/ML.git'
+                checkout([
+                    $class: 'GitSCM',
+
+                    branches: [[name: '*/main']],
+
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/chandraditya-8/ML.git'
+                    ]]
+                ])
 
             }
 
@@ -28,8 +36,10 @@ pipeline {
 
             steps {
 
-                bat 'docker stop nutripredict-container || exit 0'
-                bat 'docker rm nutripredict-container || exit 0'
+                bat '''
+                docker stop nutripredict-container
+                docker rm nutripredict-container
+                '''
 
             }
 
