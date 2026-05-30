@@ -5,23 +5,20 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t nutripredict .'
+                sh 'docker build -t nutripredict .'
             }
         }
 
         stage('Stop Old Container') {
             steps {
-                bat '''
-                docker stop nutripredict-container
-                docker rm nutripredict-container
-                exit /b 0
-                '''
+                sh 'docker stop nutripredict-container || true'
+                sh 'docker rm nutripredict-container || true'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d --name nutripredict-container -p 5000:5000 nutripredict'
+                sh 'docker run -d --name nutripredict-container -p 5000:5000 nutripredict'
             }
         }
     }
